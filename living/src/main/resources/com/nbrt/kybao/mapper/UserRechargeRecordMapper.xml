@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nbrt.kybao.mapper.UserRechargeRecordMapper">
+    <select id="searchUserRechargeRecord" resultType="com.nbrt.kybao.entity.UserRechargeRecord">
+
+        SELECT
+            *
+        FROM
+        user_recharge_record
+        where
+        user_no = #{userNo}
+        and
+            MONTH(create_time) = #{mouth}
+        AND
+        DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= str_to_date(#{lastTime},'%Y-%m-%d')
+        AND
+        DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= str_to_date(#{beforeTime},'%Y-%m-%d')
+        Order BY DATE_FORMAT(create_time,'%Y-%m-%d') desc ;
+    </select>
+
+    <select id="searchMouth" resultType="java.lang.Integer">
+
+        SELECT
+
+            MONTH(create_time) months
+        FROM
+             user_recharge_record
+        where
+              user_no = #{userNo}
+        AND
+        DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= str_to_date(#{lastTime},'%Y-%m-%d')
+        AND
+        DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= str_to_date(#{beforeTime},'%Y-%m-%d')
+        group BY months desc;
+    </select>
+</mapper>
