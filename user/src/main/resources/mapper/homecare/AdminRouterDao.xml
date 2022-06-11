@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nbrt.kybao.user.dao.AdminRouterDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.nbrt.kybao.user.entity.AdminRouterEntity" id="adminRouterMap">
+        <result property="routerId" column="router_id"/>
+        <result property="path" column="path"/>
+        <result property="commponent" column="commponent"/>
+        <result property="name" column="name"/>
+        <result property="redirect" column="redirect"/>
+        <result property="metaId" column="meta_id"/>
+        <result property="hidden" column="hidden"/>
+        <result property="childrenId" column="children_id"/>
+    </resultMap>
+
+
+</mapper>

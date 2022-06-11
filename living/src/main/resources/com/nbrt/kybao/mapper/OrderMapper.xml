@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nbrt.kybao.mapper.OrderMapper">
+    <!-- (移动端)订单费用计算（且存入订单表） -->
+    <insert id="getOrder">
+        INSERT INTO
+            sojourn_order
+        (id,
+         order_no,
+         hotel_name,
+         room_name,
+         label,
+         room_num,
+         resident_name,
+         resident_phone,
+         arrive_time,
+         expense_information,
+         room_fee,
+         meal_fee,
+         member_benefit,
+         integral_deduct,
+         total_fee,
+         is_deleted,
+         hotel_picture,
+         hotel_address,
+         hotel_phone,
+         resident_num,
+         in_time,
+         out_time,
+         deduct_fee,
+         price,
+         bargain_price,
+         days,
+         state
+        )
+        VALUES(#{id},
+               #{orderNo},
+               #{hotelName},
+               #{roomName},
+               #{label},
+               #{roomNum},
+               #{residentName},
+               #{residentPhone},
+               #{arriveTime},
+               #{expenseInformation},
+               #{roomFee},
+               #{mealFee},
+               #{memberBenefit},
+               #{integralDeduct},
+               #{totalFee},
+               0,
+               #{hotelPicture},
+               #{hotelAddress},
+               #{hotelPhone},
+               #{residentNum},
+               #{inTime},
+               #{outTime},
+               #{deductFee},
+               #{price},
+               #{bargainPrice},
+               #{days},
+               1
+              )
+    </insert>
+    <insert id="addResidentInformation">
+        INSERT INTO
+            sojourn_order
+        (fourlong,order_no)
+        VALUES
+        (#{fourlong},#{orderNo})
+    </insert>
+
+    <!-- (web端)录入住客信息-根据订单号 -->
+    <!--    <insert id="addResidentInformation" >-->
+    <!--        insert into-->
+    <!--            sojourn_order(fourlong)-->
+    <!--        values-->
+    <!--            (fourlong = #{fourlong})-->
+    <!--#         WHERE-->
+    <!--#         order_no = #{orderNo}-->
+    <!--        &lt;!&ndash;AND state = 2&ndash;&gt;      &lt;!&ndash;支付完成的订单才能录入住客信息&ndash;&gt;-->
+    <!--#         AND is_deleted = 0-->
+    <!--    </insert>-->
+    <!-- 更新订单 -->
+    <update id="updateOrder">
+        UPDATE
+            sojourn_order
+        SET
+            expense_information = #{expenseInformation},
+            room_fee = #{roomFee},
+            meal_fee = #{mealFee},
+            member_benefit = #{memberBenefit},
+            integral_deduct = #{integralDeduct},
+            deduct_fee = #{deductFee},
+            total_fee = #{totalFee},
+            hotel_name = #{hotelName},
+            price = #{price},
+            bargain_price = #{bargainPrice},
+            label = #{label},
+            hotel_name = #{hotelName},
+            hotel_phone = #{hotelPhone},
+            days = #{days},
+            state = #{state}
+        WHERE
+            id = #{id}
+          AND is_deleted = 0
+    </update>
+
+
+    <!-- (移动端)预定成功页面-根据订单号 -->
+    <select id="getOrder2" resultType="com.nbrt.kybao.entity.Order">
+        SELECT
+            order_no AS orderNo,
+            arrive_time AS arriveTime,
+            total_fee AS totalFee,
+            hotel_name AS hotelName,
+            hotel_address AS hotelAddress,
+            state AS state
+        FROM
+            sojourn_order
+        WHERE
+            order_no = #{orderNo}
+          AND is_deleted = 0
+    </select>
+    <!-- 修改订单状态:支付中→支付完成-根据订单号 -->
+    <update id="updateOrderByOrderNo">
+        UPDATE
+            sojourn_order
+        SET
+            state = 2
+        WHERE
+            order_no = #{orderNo}
+          AND state = 1
+          AND is_deleted = 0
+    </update>
+
+    <!-- (移动端)取消订单-根据订单号 -->
+    <update id="cancelOrder">
+        UPDATE
+            sojourn_order
+        SET
+            state = 4
+        WHERE
+            order_no = #{orderNo}
+          AND state = 2
+          AND is_deleted = 0
+    </update>
+
+
+
+    <!-- (web端)完成订单-2.支付完成→3.已完成-根据订单号 -->
+    <update id="finishOrder">
+        UPDATE
+            sojourn_order
+        SET
+            state = 3
+        WHERE
+            order_no = #{orderNo}
+          AND state = 2
+          AND is_deleted = 0
+    </update>
+
+    <!-- (web端)查询住客信息-根据订单号 -->
+    <select id="findOrderResidentInformation" resultType="com.nbrt.kybao.entity.Order">
+        SELECT
+            fourlong AS fourlong
+        FROM
+            sojourn_order
+        WHERE
+            order_no = #{orderNo}
+          AND is_deleted = 0
+    </select>
+
+    <!-- (web端)查询订单并分页-(酒店名)&(姓名)&(订单号) -->
+    <select id="findOrderBy4" resultType="com.nbrt.kybao.entity.Order">
+        select *
+        from
+        sojourn_order so
+        where
+        is_deleted = 0
+
+        <if test="hotelName!=null and hotelName!=''">
+            and hotel_name like concat('%',#{hotelName},'%')
+        </if>
+        <if test="residentName!=null and residentName!=''">
+            and resident_name like concat('%',#{residentName},'%')
+        </if>
+        <if test="orderNo!=null and orderNo!=''">
+            and order_no like concat('%',#{orderNo},'%')
+        </if>
+        <if test="state!=null and state!=''">
+            and state = #{state}
+        </if>
+        order by so.create_time desc
+    </select>
+
+    <!-- (web端)订单详情-订单编号 -->
+    <select id="OrderDetailByOrderNo" resultType="com.nbrt.kybao.entity.Order">
+        SELECT
+            *
+        FROM
+            sojourn_order
+        WHERE
+            order_no = #{orderNo}
+    </select>
+</mapper>

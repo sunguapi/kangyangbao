@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nbrt.kybao.homecare.dao.AppraiseDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.nbrt.kybao.homecare.entity.AppraiseEntity" id="appraiseMap">
+        <result property="id" column="id"/>
+        <result property="userNo" column="user_no"/>
+        <result property="showStatus" column="show_status"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+
+</mapper>

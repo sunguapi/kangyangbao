@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nbrt.kybao.mapper.HotelMapper">
+
+    <!-- 大按键查询酒店-酒店类型&市&(搜索值) -->
+    <select id="findHotel" resultType="com.nbrt.kybao.entity.Hotel">
+        SELECT
+        id AS id,                       <!-- AS后面的adressId对应实体类中的 -->
+        attribute_label AS attributeLabel,
+        hotel_province AS hotelProvince,
+        hotel_picture AS hotelPicture,
+        hotel_city AS hotelCity,
+        hotel_name AS hotelName,
+        hotel_telephone AS hotelTelephone,
+        member_price AS memberPrice,
+        price AS price
+        FROM
+        sojourn_hotel
+        WHERE
+        hotel_city like concat('%',#{hotelCity},'%')
+
+        <!--搜索值查询酒店(可为空)-->
+        <if test="searchValue == null and searchValue == ''">
+            and 1=1
+        </if>
+        <if test="searchValue != null and searchValue != ''">
+            and search_value like concat('%',#{searchValue},'%')
+        </if>
+        <if test="hotelType != 0">
+            and  hotel_type=#{hotelType}
+        </if>
+
+    </select>
+
+    <!-- 查询酒店信息-根据whoseid -->
+    <select id="findHotelInformation" resultType="com.nbrt.kybao.entity.Hotel">
+        SELECT
+            *
+        FROM
+            sojourn_hotel
+        WHERE
+            id = #{whoseId}
+          AND is_deleted = 0
+    </select>
+
+    <!-- 查显推荐酒店(首页面)-最新更改为推荐的两个 -->
+    <select id="getHotelByNewestRecommend" resultType="com.nbrt.kybao.vo.SojournHotelVo"><!-- map:查询出的列表集合 可以不用整个实体，而显示SQL语句查询出的值的列表集合 -->
+        SELECT
+            id AS id,
+            attribute_label AS attributeLabel,
+            hotel_picture AS hotelPicture,
+            hotel_name AS hotelName,
+            member_price AS memberPrice,
+            price AS price
+        FROM
+            sojourn_hotel
+        WHERE
+            recommend = 1
+        AND is_deleted = 0
+
+        ORDER BY recommend_time DESC
+        limit 2
+    </select>
+
+    <!-- 查显推荐酒店(旅居页面下方)-酒店类型、推荐 -->
+    <select id="getHotelByRecommend" resultType="com.nbrt.kybao.vo.SojournHotelVo"><!-- map:查询出的列表集合 可以不用整个实体，而显示SQL语句查询出的值的列表集合 -->
+        SELECT
+            id AS id,
+            attribute_label AS attributeLabel,
+            hotel_picture AS hotelPicture,
+            hotel_name AS hotelName,
+            member_price AS memberPrice,
+            price AS price
+        FROM
+            sojourn_hotel
+        WHERE
+          recommend=#{recommend}
+          AND is_deleted=0
+      <if test="hotelType != 0">
+          and  hotel_type=#{hotelType}
+      </if>
+      <if test="hotelProvince != null and hotelProvince != ''">
+          and hotel_province=#{hotelProvince}
+      </if>
+      <if test="hotelCity != null and hotelCity != ''">
+          and hotel_city=#{hotelCity}
+      </if>
+        ORDER BY recommend_time DESC
+    </select>
+
+    <!-- 酒店推荐更改(后台)-根据id -->
+    <update id="updateHotelRecommendById">
+        UPDATE
+            sojourn_hotel
+        SET
+            recommend = #{recommend},
+            recommend_time = now()
+        WHERE
+            id = #{id}
+          AND is_deleted = 0
+    </update>
+
+    <!-- 添加酒店 -->
+    <insert id="addHotel">
+        INSERT INTO sojourn_hotel
+            (hotel_province,hotel_city,hotel_name,search_value,price,hotel_telephone,is_deleted,hotel_picture,hotel_introduce,hotel_creation_time,hotel_detailed_address,hotel_type,recommend,hotel_time,attribute_label,member_price)
+        VALUES
+               (#{hotelProvince},#{hotelCity},#{hotelName},#{hotelName},#{price},#{hotelTelephone},0,#{hotelPicture},#{hotelIntroduce},#{hotelCreationTime},#{hotelDetailedAddress},#{hotelType},0,now(),#{attributeLabel},#{memberPrice})
+    </insert>
+
+    <!-- 删除酒店-根据id -->
+    <update id="deleteHotelById">
+        UPDATE sojourn_hotel SET is_deleted = 1 WHERE id=#{id} AND is_deleted = 0
+    </update>
+
+    <!-- 修改酒店信息-根据id -->
+    <update id="updateHotelById">
+        UPDATE
+            sojourn_hotel
+        SET
+            hotel_province = #{hotelProvince},
+            hotel_city = #{hotelCity},
+            hotel_name = #{hotelName},
+            price = #{price},
+            hotel_telephone = #{hotelTelephone},
+            hotel_picture = #{hotelPicture},
+            hotel_introduce = #{hotelIntroduce},
+            hotel_detailed_address=#{hotelDetailedAddress},
+            hotel_type=#{hotelType},
+            hotel_creation_time=#{hotelCreationTime},
+            attribute_label=#{attributeLabel}
+        WHERE
+            id = #{id}
+          AND is_deleted = 0
+    </update>
+
+    <!-- 查询酒店-根据id -->
+    <select id="getHotelById" resultType="com.nbrt.kybao.entity.Hotel">
+        SELECT
+            hotel_province AS hotelProvince,
+            hotel_city AS hotelCity,
+            hotel_name AS hotelName,
+            price AS price,
+            hotel_telephone AS hotelTelephone,
+            hotel_picture AS hotelPicture,
+            hotel_introduce AS hotelIntroduce,
+            hotel_creation_time AS hotelCreationTime,
+            hotel_detailed_address AS hotelDetailedAddress,
+            hotel_type AS hotelType,
+            attribute_label AS attributeLabel
+        FROM
+            sojourn_hotel
+        WHERE
+            id = #{id}
+          AND is_deleted = 0
+        ORDER BY hotel_time DESC
+    </select>
+
+    <!-- 查询酒店并分页(后台)-省市&(酒店名) -->
+    <select id="getHotelPage" resultType="com.nbrt.kybao.entity.Hotel" >
+        select
+        *
+        from
+        sojourn_hotel
+        where
+        is_deleted = 0
+        <if test="hotelProvince != null and hotelProvince != ''">
+            and hotel_province like concat('%',#{hotelProvince},'%')
+        </if>
+        <if test="hotelCity != null and hotelCity != ''">
+            and hotel_city like concat('%',#{hotelCity},'%')
+        </if>
+        <if test="hotelName != null and hotelName != ''">
+            and hotel_name like concat('%',#{hotelName},'%')
+        </if>
+    </select>
+    <select id="selectByWhoseId" resultType="com.nbrt.kybao.entity.Hotel">
+        SELECT
+              hotel_name, hotel_telephone
+        FROM sojourn_hotel
+        WHERE id=#{whoseId}
+          AND is_deleted=0
+    </select>
+
+
+    <!-- 售价管理(后台)-根据id -->
+    <update id="updatePriceById">
+        UPDATE
+            sojourn_hotel
+        SET
+            price = #{price},
+            member_price = #{memberPrice},
+            bargain_price = #{bargainPrice}
+        WHERE
+            id = #{id}
+          AND is_deleted = 0
+    </update>
+    <update id="setHotelByNewestRecommend">
+
+    </update>
+</mapper>

@@ -1,0 +1,34 @@
+server:
+  port: 8808
+spring:
+  cloud:
+    nacos:
+      server-addr: 101.132.172.154:8848
+  application:
+    name: living-service
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  mvc:
+    servlet:
+      load-on-startup: 1
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  #数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://101.132.172.154:3306/kyb?characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true #&allowMultiQueries=true:允许mybatis xml 同时操作多条sql语句
+    username: root
+    password: nbrt123
+
+mybatis-plus:
+  configuration:
+    # 自动驼峰命名
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+

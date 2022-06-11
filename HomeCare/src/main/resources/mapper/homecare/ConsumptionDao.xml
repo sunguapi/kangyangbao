@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nbrt.kybao.homecare.dao.ConsumptionDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.nbrt.kybao.homecare.entity.ConsumptionEntity" id="consumptionMap">
+        <result property="id" column="id"/>
+        <result property="consumerDiscount" column="consumer_discount"/>
+        <result property="consumerBack" column="consumer_back"/>
+        <result property="consumerSite" column="consumer_site"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="integralRate" column="integral_rate"/>
+        <result property="vipType" column="vip_type"/>
+        <result property="consumerBili" column="consumer_bili"/>
+        <result property="userGrade" column="user_grade"/>
+    </resultMap>
+
+
+</mapper>

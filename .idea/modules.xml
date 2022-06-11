@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/HomeCare/HomeCare.iml" filepath="$PROJECT_DIR$/HomeCare/HomeCare.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kybao.iml" filepath="$PROJECT_DIR$/kybao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kybao_ss/kybao_ss.iml" filepath="$PROJECT_DIR$/kybao_ss/kybao_ss.iml" />
+      <module fileurl="file://$PROJECT_DIR$/living/living.iml" filepath="$PROJECT_DIR$/living/living.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mall/mall.iml" filepath="$PROJECT_DIR$/mall/mall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user/user.iml" filepath="$PROJECT_DIR$/user/user.iml" />
+    </modules>
+  </component>
+</project>

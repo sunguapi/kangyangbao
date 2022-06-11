@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="kybao_ss" />
+        <module name="living" />
+        <module name="user" />
+        <module name="mall" />
+        <module name="HomeCare" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="HomeCare" target="1.8" />
+      <module name="kybao" target="1.8" />
+      <module name="kybao_ss" target="8" />
+      <module name="living" target="8" />
+      <module name="main" target="1.8" />
+      <module name="mall" target="1.8" />
+      <module name="user" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="kybao_ss" options="-parameters" />
+    </option>
+  </component>
+</project>

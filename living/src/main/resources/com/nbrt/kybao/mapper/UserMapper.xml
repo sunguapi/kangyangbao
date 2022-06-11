@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nbrt.kybao.mapper.UserMapper">
+    <select id="searchUserByName" resultType="com.nbrt.kybao.vo.UserVo">
+
+    </select>
+    <select id="selectPageList" resultType="com.nbrt.kybao.vo.UserVo">
+        SELECT uai.id AS id,
+               uai.user_no AS userNo,
+               uai.user_name AS userName,
+               uai.nick_name AS nickName,
+               uai.create_time AS createTime,
+               uai.address AS address,
+               uai.user_grade AS userGrade,
+               uai.con_points AS con_points,
+               uai.amount_con AS amountCon,
+               uai.balance AS balance,
+               uai.remain_point AS remainPoint,
+               uvt.vip_type AS vipType
+        FROM tab_user uai,user_vip_type uvt
+        WHERE uai.user_grade=uvt.id
+        AND uai.relation_grade=1
+        <if test="userName != null and userName != ''">
+            and uai.user_name = #{userName}
+        </if>
+        <if test="nickName != null and nickName != ''">
+            and uai.nick_name = #{nickName}
+        </if>
+    </select>
+</mapper>

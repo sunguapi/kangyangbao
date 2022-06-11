@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nbrt.kybao.mapper.NewsMapper">
+
+    <!-- 获取新闻类型 -->
+    <select id="getNewsTypeAll" resultType="String">
+        SELECT news_type FROM news GROUP BY news_type
+    </select>
+
+    <!-- 获取新闻列表 -->
+    <select id="getNewsList" resultType="com.nbrt.kybao.entity.News">
+        select *
+        from
+            news
+        where
+            news_type =#{type}
+            and is_deleted = 0
+            <if test="newsName!=null and newsName!=''">
+            and news_name like concat('%',#{newsName},'%')
+            </if>
+    </select>
+
+    <!-- 添加新闻 -->
+    <insert id="addNews">
+        INSERT INTO news (images,news_name,news_content,news_writer,create_time,news_type,is_deleted)
+        VALUES(#{images},#{newsName},#{newsContent},#{newsWriter},now(),#{newsType},0)
+    </insert>
+
+    <!-- (批量)删除新闻-根据新闻id -->
+    <delete id="deleteNewsById" parameterType="integer">
+        UPDATE news SET is_deleted = 1 WHERE id = #{id} AND is_deleted = 0
+    </delete>
+
+    <!-- 修改新闻-根据新闻id -->
+    <update id="updateNewsById">
+        UPDATE
+        news
+        SET
+        images = #{images},
+        news_name = #{newsName},
+        news_content = #{newsContent},
+        news_writer = #{newsWriter},
+        news_type = #{newsType}
+        WHERE
+        id = #{id}
+        AND is_deleted = 0
+    </update>
+
+    <!-- 查询新闻-根据新闻id -->
+    <select id="getNewsById" resultType="com.nbrt.kybao.entity.News">
+        SELECT
+        images AS images,
+        news_name AS newsName,
+        news_content AS newsContent,
+        news_writer AS newsWriter,
+        create_time AS createTime,
+        news_type AS newsType
+        FROM
+        news
+        WHERE
+        id = #{id}
+        AND is_deleted = 0
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 首页新闻查询显示简略-根据新闻类别 -->
+    <select id="getAllNewsByNewsType"  resultType="com.nbrt.kybao.entity.News">
+        SELECT
+            images AS images,
+            news_name AS newsName,
+            news_content AS newsContent,
+            news_writer AS newsWriter,
+            create_time AS createTime
+        FROM
+            news
+        WHERE
+            news_type = #{newsType}
+          AND is_deleted = 0
+    </select>
+
+
+</mapper>

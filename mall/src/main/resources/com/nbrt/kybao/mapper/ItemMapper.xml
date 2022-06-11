@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nbrt.kybao.mall.mapper.ItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nbrt.kybao.mall.model.entity.Item">
+        <id column="id" property="id" />
+        <result column="order_id" property="orderId" />
+        <result column="user_id" property="userId" />
+        <result column="pro_id" property="proId" />
+        <result column="pro_name" property="proName" />
+        <result column="img_path" property="imgPath" />
+        <result column="price" property="price" />
+        <result column="quantity" property="quantity" />
+        <result column="total_price" property="totalPrice" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+</mapper>

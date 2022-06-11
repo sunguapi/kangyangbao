@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nbrt.kybao.mapper.RoomMapper">
+
+    <!-- 查询客房列表-该客房所属的酒店的id -->
+    <select id="findRoomListByWhoseId" resultType="com.nbrt.kybao.entity.Room">
+        SELECT
+        whose_id AS whoseId,
+        id AS id,
+        label AS label,
+        room_picture AS roomPicture,
+        room_name AS roomName,
+        price AS price,
+        bargain_price AS bargainPrice,
+        meal_fee AS mealFee,
+        area AS area,
+        room_num AS roomNum,
+        label AS label,
+        introduce AS introduce,
+        room_state AS roomState
+        FROM
+        sojourn_room
+        WHERE
+        whose_id = #{whoseId}
+        ORDER BY bargain_price  <!-- 根据特价从小到大排序 -->
+    </select>
+
+    <!-- 查询客房-根据id -->
+    <select id="findRoomById" resultType="com.nbrt.kybao.entity.Room">
+        SELECT
+            *
+        FROM
+            sojourn_room
+        WHERE
+            id = #{id}
+          AND is_deleted = 0
+    </select>
+
+
+    <!-- 添加客房 -->
+    <insert id="addRoom">
+        INSERT INTO sojourn_room (room_picture,room_name,price,bargain_price,meal_fee,area,room_num,label,introduce,is_deleted,whose_id,room_state)
+        VALUES(#{roomPicture},#{roomName},#{price},#{bargainPrice},#{mealFee},#{area},#{roomNum},#{label},#{introduce},0,#{whoseId},2)
+    </insert>
+
+    <!-- 删除客房-根据id -->
+    <update id="deleteRoomById">
+        UPDATE sojourn_room SET is_deleted = 1 WHERE id=#{id} AND is_deleted = 0
+    </update>
+
+    <!-- 修改客房信息-根据id -->
+    <update id="updateRoomById">
+        UPDATE
+            sojourn_room
+        SET
+            room_picture = #{roomPicture},
+            room_name = #{roomName},
+            price = #{price},
+            bargain_price = #{bargainPrice},
+            meal_fee = #{mealFee},
+            area = #{area},
+            room_num = #{roomNum},
+            label = #{label},
+            introduce = #{introduce}
+        WHERE
+            id = #{id}
+          AND is_deleted = 0
+    </update>
+
+    <!-- 查询客房并分页 -->
+    <select id="findRoomPage" resultType="com.nbrt.kybao.entity.Room">
+        select
+        *
+        from
+        sojourn_room
+        where
+        whose_id = #{whoseId}
+        and is_deleted = 0
+        <if test="roomState != null and roomState != ''">
+            and room_state = #{roomState}               <!-- 0全部状态  1使用中  2开放预约  3暂停使用 -->
+        </if>
+        <if test="roomName != null and roomName != ''">
+            and room_name like concat('%',#{roomName},'%')
+        </if>
+    </select>
+
+    <!-- 修改客房状态 -->
+    <update id="updateRoomState">
+        UPDATE
+            sojourn_room
+        SET
+            room_state = #{roomState}
+        WHERE
+            id = #{id}
+          AND is_deleted = 0
+    </update>
+
+    <!-- 修改客房基本信息管理(后台)-根据id -->
+    <update id="updateRoomInformationById">
+        UPDATE
+        sojourn_hotel
+        SET
+        hotel_province = #{hotelProvince},
+        hotel_city = #{hotelCity},
+        environment = #{environment},
+        hotel_name = #{hotelName},
+        search_value = #{hotelName},<!-- 搜索值也一并赋值 -->
+        image_text = #{imageText},
+        attribute_label = #{attributeLabel},
+        room_picture = #{roomPicture}
+        WHERE
+        id = #{id}
+        AND is_deleted = 0
+    </update>
+</mapper>

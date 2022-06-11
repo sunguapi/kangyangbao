@@ -1,0 +1,38 @@
+package com.nbrt.kybao.mall.config;
+
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * @author hjh
+ * @date 2022/5/11 13:49
+ */
+@Configuration
+@MapperScan("com.nbrt.kybao.mall.mapper")
+public class MybatisPlusConfig {
+    /**
+     * 分页插件
+     *
+     * @return the mybatis plus interceptor
+     */
+    @Bean
+    public MybatisPlusInterceptor paginationInnerInterceptor(){
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        return interceptor;
+    }
+
+    /**
+     * 乐观锁插件
+     * @return the mybatis plus interceptor
+     */
+    @Bean
+    public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor(){
+        return new OptimisticLockerInnerInterceptor();
+    }
+}

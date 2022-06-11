@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nbrt.kybao.homecare.dao.ServerItemDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.nbrt.kybao.homecare.entity.ServerItemEntity" id="serverItemMap">
+        <result property="serverItemId" column="server_item_id"/>
+        <result property="serverItemName" column="server_item_name"/>
+        <result property="price" column="price"/>
+        <result property="saleCount" column="sale_count"/>
+        <result property="descript" column="descript"/>
+        <result property="arrivalTime" column="arrival_time"/>
+        <result property="icon" column="icon"/>
+        <result property="praiseRate" column="praise_rate"/>
+        <result property="showStatus" column="show_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="dgxz" column="dgxz"/>
+    </resultMap>
+
+
+</mapper>

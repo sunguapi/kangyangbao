@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nbrt.kybao.mall.mapper.OrdersMapper">
+
+    <select id="selectByNo" parameterType="java.lang.String" resultType="com.nbrt.kybao.mall.model.vo.OrderDetailVo">
+        SELECT  o.order_no AS orderNo,
+                r.receive_name AS receiveName,
+                r.receive_mobile AS receiveMobile,
+                r.receive_province AS receiveProvince,
+                r.receive_city AS receiveCity,
+                r.receive_district AS receiveDistrict,
+                r.receive_address AS receiveAddress,
+                o.postage AS postage,
+                o.amount AS orderAmount,
+                pay.pay_no AS payNo,
+                pay.payment_type AS paymentType,
+                pay.amount AS payAmount,
+                o.order_status AS orderStatus,
+                o.create_time AS createTime
+        FROM tab_orders o,tab_receive r,tab_payinfo pay
+        WHERE o.receive_no=r.receive_no AND o.pay_no=pay.pay_no AND o.deleted=0
+          AND o.order_no=#{orderNo}
+    </select>
+    <select id="queryPageInfo" resultType="com.nbrt.kybao.mall.model.vo.OrderListVo">
+        SELECT  o.order_no AS orderNo,
+        o.amount AS amount,
+        p.pay_no AS payNo,
+        p.payment_type AS paymentType,
+        r.receive_name AS receiveName,
+        r.receive_phone AS receivePhone,
+        o.create_time AS createTime,
+        o.order_status AS orderStatus
+        FROM tab_orders o,tab_receive r,tab_payinfo p
+        where o.receive_no=r.receive_no AND o.pay_no=p.pay_no
+        AND o.deleted=0
+        <if test="startTime != null and startTime != ''">
+            AND o.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND o.create_time &lt;= #{endTime}
+        </if>
+        <if test="like != null and like != ''">
+            AND r.receive_name like concat('%',#{like},'%')
+        </if>
+    </select>
+    <select id="selectCommodityListByNo" resultType="com.nbrt.kybao.mall.model.vo.CommodityInfoVo">
+        SELECT p.pro_no AS proNo,
+               p.pro_name AS proName,
+               p.main_img AS mainImg,
+               pro.property_price AS commodityPrice,
+               op.pro_count AS proCount
+        FROM tab_order_product op, tab_product p, tab_property pro,tab_orders o
+        WHERE op.property_no=pro.property_no AND pro.pro_no=p.pro_no AND o.order_no=op.order_no
+          AND o.deleted=0 AND o.order_no=#{orderNo}
+    </select>
+
+</mapper>

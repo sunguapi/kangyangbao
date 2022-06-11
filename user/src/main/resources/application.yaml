@@ -1,0 +1,40 @@
+spring:
+  #数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://101.132.172.154:3306/kyb?characterEncoding=utf-8&useSSL=true&serverTimezone=UTC&allowMultiQueries=true #&allowMultiQueries=true:允许mybatis xml 同时操作多条sql语句
+    username: root
+    password: nbrt123
+  #模块名称
+  application:
+    name: user
+  #时间格式
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  #redis配置
+  redis:
+    host: 101.132.172.154
+    port: 6379
+    password: nbrt123
+  cloud:
+    #nacos
+    nacos:
+#      server-addr: 127.0.0.1:8848
+      server-addr: 101.132.172.154:8848
+#模块端口
+server:
+  port: 11000
+#mybatis-plus配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+      id-type: auto
+alicloud:
+  access-key: "LTAI5tKpjrJv4w6t7wauzmqH"
+  secret-key: "tkoNyihRIQLwg0xtIvIkbYQ6pWOXtk"
+  templateCode: "SMS_154950909"

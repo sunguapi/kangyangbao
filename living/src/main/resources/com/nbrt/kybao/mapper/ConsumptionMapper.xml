@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nbrt.kybao.mapper.ConsumptionMapper">
+
+    <select id="searchConsumptionList" resultType="com.nbrt.kybao.vo.ConsumptionVo">
+        SELECT
+            uc.id AS id,
+            uc.consumer_discount AS consumerDiscount,
+            uc.consumer_back AS consumerBack,
+            uc.consumer_site AS consumerSite,
+            uc.vip_type AS vipType,
+            uc.integral_rate AS integralRate,
+            uc.consumer_bili AS consumerBili
+        FROM tab_consumption uc
+        WHERE
+        <if test="consumerSite != null and consumerSite != ''">
+          uc.consumer_site=#{consumerSite}
+        </if>
+    </select>
+</mapper>

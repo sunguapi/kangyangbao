@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nbrt.kybao.mapper.ChildrenMapper">
+    <select id="searchChildrenById" resultType="com.nbrt.kybao.vo.UserChildrenVo">
+        SELECT
+            uai.id AS id,
+            uai.user_name AS userName,
+            uai.nick_name AS nickName,
+            uai.create_time AS createTime,
+            uai.address AS address,
+            uai.user_grade AS userGrade,
+            uvt.vip_type AS vipType
+        FROM  tab_user uai,user_vip_type uvt,tab_user_relation tur
+        WHERE uai.user_no  in (SELECT  tur.children_user_no from tab_user_relation  where  tur.primary_user_no =#{primaryUserNo})
+        AND uai.user_grade=uvt.id
+    </select>
+</mapper>

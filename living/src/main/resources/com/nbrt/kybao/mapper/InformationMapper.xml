@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nbrt.kybao.mapper.InformationMapper">
+    <insert id="register" parameterType="com.nbrt.kybao.entity.Information">
+        insert into information(username,nick,avatar,sex,age)
+        values (#{username},#{nick},#{avatar},#{sex},#{age})
+    </insert>
+
+
+    <select id="getPhone" resultType="string">
+         select username from information where username = #{username}
+    </select>
+
+
+    <select id="getInformation" resultType="map">
+        select username,nick,avatar,sex,age,membership_level,integral from information where username = #{username}
+    </select>
+
+    <update id="setPwd">
+        update information set _pwd = #{password} where username =#{phone}
+    </update>
+
+    <insert id="receivingAddress" parameterType="com.nbrt.kybao.entity.ReceivingAddress">
+        insert into receiving_address(name,phone,province,city,address) values (name,phone,province,city,address)
+    </insert>
+
+</mapper>
