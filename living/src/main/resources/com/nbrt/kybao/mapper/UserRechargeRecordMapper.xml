@@ -10,7 +10,7 @@
         where
         user_no = #{userNo}
         and
-            MONTH(create_time) = #{mouth}
+        mouth = #{mouth}
         AND
         DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= str_to_date(#{lastTime},'%Y-%m-%d')
         AND
@@ -21,8 +21,7 @@
     <select id="searchMouth" resultType="java.lang.Integer">
 
         SELECT
-
-            MONTH(create_time) months
+            mouth
         FROM
              user_recharge_record
         where
@@ -31,6 +30,6 @@
         DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= str_to_date(#{lastTime},'%Y-%m-%d')
         AND
         DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= str_to_date(#{beforeTime},'%Y-%m-%d')
-        group BY months desc;
+        group BY mouth desc;
     </select>
 </mapper>

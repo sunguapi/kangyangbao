@@ -28,4 +28,5 @@ public class UserRechargeRecord {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createTime;
 
+    private int mouth;
 }
