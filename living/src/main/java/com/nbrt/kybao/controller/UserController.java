@@ -2,11 +2,14 @@ package com.nbrt.kybao.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nbrt.kybao.entity.User;
+import com.nbrt.kybao.entity.UserRechargeRecord;
 import com.nbrt.kybao.entity.VipType;
 import com.nbrt.kybao.service.ChildrenService;
+import com.nbrt.kybao.service.UserRechargeRecordService;
 import com.nbrt.kybao.service.UserService;
 import com.nbrt.kybao.service.VipTypeServie;
 import com.nbrt.kybao.utils.AjaxResponse;
@@ -15,6 +18,7 @@ import com.nbrt.kybao.utils.MyPageUtils;
 import com.nbrt.kybao.vo.UserChildrenVo;
 import com.nbrt.kybao.vo.UserInfoVo;
 import com.nbrt.kybao.vo.UserVo;
+import io.jsonwebtoken.Jwt;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -23,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 
 @Api(tags = "用户中心" )
@@ -39,6 +44,8 @@ public class UserController {
     @Autowired
     private ChildrenService childrenService;
 
+    @Autowired
+    private UserRechargeRecordService userRechargeRecordService;
 
     @ApiOperation("用户中心：修改密码")
     @PostMapping("/updateUserPassWord")
@@ -181,13 +188,55 @@ public class UserController {
         return AjaxResponse.success(userService.searchUserConsumption(token));
     }
 
-//    @ApiOperation("移动端：更新用户积分")
-//    @PostMapping("/updateUserConsumption")
-//    public AjaxResponse updateUserConsumption(String token, BigDecimal ConsumptionAmount, BigDecimal DeductionOfIntegral){
-//        userService.updateUserConsumption(token, ConsumptionAmount,DeductionOfIntegral);
-//        return AjaxResponse.success();
-//    }
+    @ApiOperation("移动端：充值金额")
+    @PostMapping("/insertUserBalance")
+    public AjaxResponse insertUserBalance(String token, BigDecimal money){
+        if(token == null) {
+            return AjaxResponse.error("token字符串为空");
+        }
+        String userNo = JwtHelper.getUserName(token);
+        Calendar instance = Calendar.getInstance();
+        UserRechargeRecord record = new UserRechargeRecord();
+        record.setUserNo(userNo);
+        record.setRechargeAmount(money);
+        record.setMouth(instance.get(Calendar.MONTH) + 1);
+        userRechargeRecordService.save(record);
+        User one = userService.getOne(new QueryWrapper<User>().eq("user_no", userNo));
+        UpdateWrapper<User> set = new UpdateWrapper<User>().eq("user_no", userNo).set("balance", one.getBalance().add(money));
+        userService.update(set);
+        return AjaxResponse.success();
+    }
 
 
+    @ApiOperation("移动端：查询金额")
+    @PostMapping("/searchUserBalance")
+    public AjaxResponse searchUserBalance(String token){
+        if(token == null) {
+            return AjaxResponse.error("token字符串为空");
+        }
+        String userNo = JwtHelper.getUserName(token);
+        return AjaxResponse.success(userService.getOne(new QueryWrapper<User>().eq("user_no", userNo)).getBalance());
+    }
 
+    @ApiOperation("移动端：修改昵称")
+    @PostMapping("/updateNickName")
+    public AjaxResponse updateNickName(String token,String nickName){
+        if(token == null) {
+            return AjaxResponse.error("token字符串为空");
+        }
+        String userNo = JwtHelper.getUserName(token);
+        userService.update(new UpdateWrapper<User>().eq("user_no", userNo).set("nick_name", nickName));
+        return AjaxResponse.success();
+    }
+
+    @ApiOperation("移动端：修改头像")
+    @PostMapping("/updateUserAvatar")
+    public AjaxResponse updateUserAvatar(String token,String userAvatar){
+        if(token == null) {
+            return AjaxResponse.error("token字符串为空");
+        }
+        String userNo = JwtHelper.getUserName(token);
+        userService.update(new UpdateWrapper<User>().eq("user_no", userNo).set("user_avatar", userAvatar));
+        return AjaxResponse.success();
+    }
 }
