@@ -21,9 +21,6 @@ import java.util.Date;
  * @date 2022/5/31
  */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserVo {
 
     @ApiModelProperty(value = "id")

@@ -13,9 +13,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @ApiModel(value = "返回所有快递地址信息")
 public class ReceiveAddressVo implements Serializable {
     @ApiModelProperty(value = "id")

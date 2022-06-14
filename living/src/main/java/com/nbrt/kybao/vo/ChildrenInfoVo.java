@@ -18,9 +18,6 @@ import java.util.Date;
  * @date 2022/6/1
  */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ChildrenInfoVo {
 
     @ApiModelProperty(value = "id")

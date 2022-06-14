@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.nbrt.kybao.entity.Order;
 import com.nbrt.kybao.entity.User;
 import com.nbrt.kybao.entity.UserRechargeRecord;
 import com.nbrt.kybao.entity.VipType;
@@ -77,17 +78,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User>implements User
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUserNo, UserNo));
         return user.getUserIntegral();
     }
-
-
-
-//    @Override
-//    public void updateUserConsumption(String token, BigDecimal consumptionAmount,BigDecimal DeductionOfIntegral) {
-//        String UserNo = JwtHelper.getUserName(token);
-//        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>().eq(User::getUserNo, UserNo);
-//        User user = new User();
-//        user.setUser()
-//        userMapper.update()
-//    }
-
 
 }

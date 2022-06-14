@@ -19,9 +19,6 @@ import java.util.Date;
  * @date 2022/6/1
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class UserInfoVo {
 
     private String vipType;

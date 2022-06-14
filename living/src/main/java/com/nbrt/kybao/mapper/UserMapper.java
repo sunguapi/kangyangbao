@@ -1,6 +1,7 @@
 package com.nbrt.kybao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.nbrt.kybao.entity.Order;
 import com.nbrt.kybao.entity.User;
 import com.nbrt.kybao.vo.UserVo;
 import org.apache.ibatis.annotations.Mapper;

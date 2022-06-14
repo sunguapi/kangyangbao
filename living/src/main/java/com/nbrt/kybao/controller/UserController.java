@@ -226,7 +226,7 @@ public class UserController {
         }
         String userNo = JwtHelper.getUserName(token);
         userService.update(new UpdateWrapper<User>().eq("user_no", userNo).set("nick_name", nickName));
-        return AjaxResponse.success();
+        return AjaxResponse.success(userService.getOne( new QueryWrapper<User>().eq("user_no", userNo)).getNickName());
     }
 
     @ApiOperation("移动端：修改头像")
@@ -237,6 +237,6 @@ public class UserController {
         }
         String userNo = JwtHelper.getUserName(token);
         userService.update(new UpdateWrapper<User>().eq("user_no", userNo).set("user_avatar", userAvatar));
-        return AjaxResponse.success();
+        return AjaxResponse.success(userService.getOne( new QueryWrapper<User>().eq("user_no", userNo)).getUserAvatar());
     }
 }

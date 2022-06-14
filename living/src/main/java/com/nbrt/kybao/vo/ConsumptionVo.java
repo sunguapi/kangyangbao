@@ -15,8 +15,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class ConsumptionVo implements Serializable {
 
     @ApiModelProperty(value = "id")

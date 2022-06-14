@@ -13,8 +13,6 @@ import java.util.List;
  */
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserRechargeRecordVo {
 
     private Integer integers;
