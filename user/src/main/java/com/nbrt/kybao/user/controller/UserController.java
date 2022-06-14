@@ -4,6 +4,7 @@ package com.nbrt.kybao.user.controller;
 import com.nbrt.kybao.user.constant.UserEnum;
 import com.nbrt.kybao.user.entity.UserEntity;
 import com.nbrt.kybao.user.service.UserService;
+import com.nbrt.kybao.user.utils.JwtHelper;
 import com.nbrt.kybao.user.utils.R;
 import com.nbrt.kybao.user.vo.user.UserLoginRespVo;
 import com.nbrt.kybao.user.vo.UserLoginVo;
@@ -13,6 +14,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 /**
@@ -104,4 +107,18 @@ public class UserController {
         //注册成功
         return R.ok(UserEnum.USER_REGIST_SUCCESS.getMsg());
     }
+
+//    @PostMapping("/user/orders")
+//    @ApiOperation("移动端：我的订单")
+//    public R userOrders(@RequestHeader(value = "token") String token, @RequestParam Map<String ,Object> params) {
+//        if(token == null)
+//        {
+//            return R.error("token为空");
+//        }
+//        String userNO = JwtHelper.getUserName(token);
+//
+////        return R.ok().;
+//        return null;
+//    }
+
 }
